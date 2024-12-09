@@ -1,0 +1,24 @@
+# System files
+.DS_Store
+
+# Virtual environment
+env/
+venv/
+.venv/
+
+# Draft files
+draft/
+
+# Python cache
+__pycache__/
+.mypy_cache/
+.pytest_cache/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Configuration files
+mypy.ini
