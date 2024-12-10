@@ -4,10 +4,6 @@ from typing import Union
 
 import numpy as np
 import rasterio
-from rpy2.rinterface import FloatSexpVector, IntSexpVector  # type: ignore
-from rpy2.robjects import numpy2ri  # type: ignore
-
-numpy2ri.activate()
 
 
 class Helpers:
@@ -22,7 +18,7 @@ class Helpers:
         self,
         raster: Union[np.ndarray, str],
         interactive: bool = True,
-    ) -> Union[FloatSexpVector, IntSexpVector]:
+    ) -> np.ndarray:
         """
         Convert a raster (numpy array or .tif file) to an R matrix.
 
@@ -47,22 +43,20 @@ class Helpers:
             try:
                 with rasterio.open(raster) as src:
                     raster = np.array(src.read(1))
-            except FileNotFoundError:
-                raise FileNotFoundError(f"File {raster} not found.")
-            except rasterio.errors.RasterioIOError:
-                raise ValueError(f"Error reading the file {raster}.")
+            except rasterio.errors.RasterioIOError as e:
+                if "No such file or directory" in str(e):
+                    raise FileNotFoundError(f"File {raster} not found.") from e
+                else:
+                    raise ValueError(f"Error reading the file {raster}.") from e
 
         # Ensure raster is a 2D numpy array
         if raster.ndim != 2:
             raise ValueError("Input must be a 2D numpy array.")
 
-        # Convert numpy array to R matrix
-        matrix = numpy2ri.py2rpy(raster)
-
         if interactive:
-            print(f"Dimensions of matrix are {raster.shape[0]} x {raster.shape[1]}")
+            print(f"Dimensions of matrix are {raster.shape[0]}x{raster.shape[1]}")
 
-        return matrix
+        return raster
 
     def _resize_matrix(self):
         """TODO."""
