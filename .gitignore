@@ -1,5 +1,6 @@
 # System files
 .DS_Store
+.vscode/
 
 # Virtual environment
 env/
