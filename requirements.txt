@@ -1,3 +1,5 @@
+matplotlib
 numpy
 rasterio
 rpy2
+tqdm

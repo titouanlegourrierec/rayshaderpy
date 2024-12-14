@@ -1,8 +1,13 @@
 """TODO."""
 
+from rpy2 import robjects as ro
+
 from . import _logging  # noqa
 from ._r_setup import install_r_packages
 from .config import PACKAGES_LIST, R_LIBRARY_PATH
+
+ro.r(f".libPaths('{R_LIBRARY_PATH}')")
+ro.r(f"library(rayshader, lib.loc = '{R_LIBRARY_PATH}')")
 
 
 def initialize() -> None:

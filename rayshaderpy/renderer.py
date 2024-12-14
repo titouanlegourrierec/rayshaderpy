@@ -6,6 +6,7 @@ import numpy as np
 
 from .helpers import _raster_to_matrix
 from .shading import _sphere_shade
+from .visualization import _plot_map
 
 
 class Renderer:
@@ -14,6 +15,21 @@ class Renderer:
     def __init__(self):
         """TODO."""
         pass
+
+    def plot_map(
+        self,
+        hillshade: np.ndarray,
+        rotate: int = 0,
+        asp: float = 1,
+        output_path: Union[str, None] = None,
+    ):
+        """TODO."""
+        return _plot_map(
+            hillshade,
+            rotate,
+            asp,
+            output_path,
+        )
 
     def raster_to_matrix(
         self,
