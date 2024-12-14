@@ -10,32 +10,28 @@ import rasterio
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from rayshaderpy.helpers import Helpers
+from rayshaderpy.helpers import _raster_to_matrix
 
 
 class TestRasterToMatrix(unittest.TestCase):
     """Test the _raster_to_matrix method."""
 
-    def setUp(self):
-        """Set up the test."""
-        self.helper = Helpers()
-
     def test_valid_numpy_array(self):
         """Test when input is a valid 2D numpy array."""
         raster = np.array([[1, 2], [3, 4]])
-        result = self.helper._raster_to_matrix(raster, interactive=False)
+        result = _raster_to_matrix(raster, interactive=False)
         np.testing.assert_array_equal(result, raster)
 
     def test_invalid_input_type(self):
         """Test when input is neither a numpy array nor a string."""
         with self.assertRaises(ValueError) as context:
-            self.helper._raster_to_matrix(12345)
+            _raster_to_matrix(12345)
         self.assertIn("Input must be a numpy array or a string", str(context.exception))
 
     def test_invalid_file_extension(self):
         """Test when input file is not a .tif file."""
         with self.assertRaises(ValueError) as context:
-            self.helper._raster_to_matrix("invalid_file.txt")
+            _raster_to_matrix("invalid_file.txt")
         self.assertIn("Input file must be a .tif file", str(context.exception))
 
     @patch("rasterio.open")
@@ -46,13 +42,13 @@ class TestRasterToMatrix(unittest.TestCase):
             mock_data
         )
 
-        result = self.helper._raster_to_matrix("valid_file.tif", interactive=False)
+        result = _raster_to_matrix("valid_file.tif", interactive=False)
         np.testing.assert_array_equal(result, mock_data)
 
     def test_file_not_found(self):
         """Test when input file does not exist."""
         with self.assertRaises(FileNotFoundError) as context:
-            self.helper._raster_to_matrix("non_existent_file.tif")
+            _raster_to_matrix("non_existent_file.tif")
         self.assertIn("File non_existent_file.tif not found", str(context.exception))
 
     @patch("rasterio.open")
@@ -60,14 +56,14 @@ class TestRasterToMatrix(unittest.TestCase):
         """Test when input file cannot be read by rasterio."""
         mock_rasterio_open.side_effect = rasterio.errors.RasterioIOError("Read error")
         with self.assertRaises(ValueError) as context:
-            self.helper._raster_to_matrix("invalid_file.tif")
+            _raster_to_matrix("invalid_file.tif")
         self.assertIn("Error reading the file invalid_file.tif", str(context.exception))
 
     def test_non_2d_numpy_array(self):
         """Test when input numpy array is not 2D."""
         raster = np.array([[[1, 2], [3, 4]]])  # 3D array
         with self.assertRaises(ValueError) as context:
-            self.helper._raster_to_matrix(raster)
+            _raster_to_matrix(raster)
         self.assertIn("Input must be a 2D numpy array", str(context.exception))
 
     @patch("rasterio.open")
@@ -79,7 +75,7 @@ class TestRasterToMatrix(unittest.TestCase):
         )
 
         with patch("builtins.print") as mock_print:
-            self.helper._raster_to_matrix("valid_file.tif", interactive=True)
+            _raster_to_matrix("valid_file.tif", interactive=True)
             mock_print.assert_called_with("Dimensions of matrix are 2x2")
 
 
