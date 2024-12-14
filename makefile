@@ -41,7 +41,7 @@ test:
 
 # Pre commit
 pre-commit:
-	pre-commit run --all-files
+	pre-commit run --all-files --config .pre-commit-config.yaml
 	@echo "🔍 Pre-commit hooks passed 🔍"
 
 # lint code
