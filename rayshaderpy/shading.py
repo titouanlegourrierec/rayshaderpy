@@ -4,9 +4,8 @@ from typing import Union
 
 import numpy as np
 import rpy2.robjects as ro
-from rpy2.robjects import numpy2ri
 
-numpy2ri.activate()
+from .helpers import _assign_params, _validate_params
 
 
 # Functions for generating hillshades.
@@ -82,46 +81,25 @@ def _sphere_shade(
     - hillshade (np.ndarray): RGB array of hillshaded texture mappings.
     """
 
-    ALLOWED_TEXTURES = [
-        "imhof1",
-        "imhof2",
-        "imhof3",
-        "imhof4",
-        "desert",
-        "bw",
-        "unicorn",
-    ]
+    # fmt: off
+    params = {
+        "heightmap": (heightmap, np.ndarray), "sunangle": (sunangle, (float, int)), "texture": (texture, (np.ndarray, str)),
+        "normalvectors": (normalvectors, (np.ndarray, type(None))), "colorintensity": (colorintensity, (float, int)),
+        "zscale": (zscale, (float, int)), "progbar": (progbar, bool),
+    }
+    # fmt: on
+    _validate_params(params)
 
-    # Check types of input parameters
-    if not isinstance(heightmap, np.ndarray):
-        raise ValueError("Heightmap must be a np.ndarray.")
+    # fmt: off
+    ALLOWED_TEXTURES = ["imhof1", "imhof2", "imhof3", "imhof4", "desert", "bw", "unicorn"]
+    # fmt: on
+
+    if isinstance(texture, str) and texture not in ALLOWED_TEXTURES:
+        raise ValueError(f"Texture must be one of {ALLOWED_TEXTURES}.")
     if heightmap.ndim != 2:
         raise ValueError("Heightmap must be a 2D numpy array.")
-    if not isinstance(sunangle, (float, int)):
-        raise ValueError("Sunangle must be a float or int.")
-    if not isinstance(texture, (np.ndarray, str)):
-        raise ValueError("Texture must be a FloatSexpVector, IntSexpVector, or str.")
-    elif isinstance(texture, str):
-        if texture not in ALLOWED_TEXTURES:
-            raise ValueError(f"Texture must be one of {ALLOWED_TEXTURES}.")
-    if not isinstance(normalvectors, (np.ndarray, type(None))):
-        raise ValueError("Normalvectors must be a numpy array or None.")
-    if not isinstance(colorintensity, (float, int)):
-        raise ValueError("Colorintensity must be a float or int.")
-    if not isinstance(zscale, (float, int)):
-        raise ValueError("Zscale must be a float or int.")
-    if not isinstance(progbar, bool):
-        raise ValueError("Progbar must be a boolean.")
 
-    ro.globalenv["heightmap"] = heightmap
-    ro.globalenv["sunangle"] = sunangle
-    ro.globalenv["texture"] = texture
-    ro.globalenv["normalvectors"] = (
-        numpy2ri.py2rpy(normalvectors) if normalvectors is not None else ro.r("NULL")
-    )
-    ro.globalenv["colorintensity"] = colorintensity
-    ro.globalenv["zscale"] = zscale
-    ro.globalenv["progbar"] = progbar
+    _assign_params(params)
 
     hillshade = ro.r(
         "rayshader::sphere_shade(heightmap, sunangle, texture, normalvectors, colorintensity, zscale, progbar)"

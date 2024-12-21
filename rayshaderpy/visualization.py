@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import rpy2.robjects as ro
 
-from .helpers import _assign_variables, _validate_variables
+from .helpers import _assign_params, _validate_params
 
 
 # Functions for displaying/saving 2D visualizations and 3D prints/models
@@ -210,8 +210,8 @@ def _plot_3d(
     }
     # fmt: on
 
-    _validate_variables(params)
-    _assign_variables(params)
+    _validate_params(params)
+    _assign_params(params)
 
     if output_path is None:
         path = tempfile.NamedTemporaryFile(suffix=".png", delete=False).name

@@ -5,9 +5,12 @@ from typing import Union
 import numpy as np
 import rasterio
 import rpy2.robjects as ro
+from rpy2.robjects import numpy2ri
+
+numpy2ri.activate()
 
 
-def _assign_variables(params: dict) -> None:
+def _assign_params(params: dict) -> None:
     """
     Assign variables to the R global environment.
 
@@ -19,8 +22,10 @@ def _assign_variables(params: dict) -> None:
     for var_name, (var_value, _) in params.items():
         if isinstance(var_value, type(None)):
             var_value = ro.rinterface.NULL
-        if isinstance(var_value, tuple):
+        elif isinstance(var_value, tuple):
             var_value = ro.FloatVector(var_value)
+        elif var_name == "normalvectors" and isinstance(var_value, np.ndarray):
+            var_value = numpy2ri.py2rpy(var_value)
         ro.globalenv[var_name] = var_value
 
 
@@ -93,7 +98,7 @@ def _resize_matrix():
     pass
 
 
-def _validate_variables(params: dict) -> None:
+def _validate_params(params: dict) -> None:
     """
     Validate the input variables.
 
@@ -107,6 +112,11 @@ def _validate_variables(params: dict) -> None:
             if var_value not in var_type:
                 raise ValueError(
                     f"'{var_name}' must be one of {var_type}, but got {var_value}."
+                )
+        elif isinstance(var_type, tuple):
+            if not any(isinstance(var_value, t) for t in var_type):
+                raise ValueError(
+                    f"'{var_name}' must be one of {[t.__name__ for t in var_type if hasattr(t, '__name__')]}, but got {type(var_value).__name__}."
                 )
         else:
             if not isinstance(var_value, var_type):

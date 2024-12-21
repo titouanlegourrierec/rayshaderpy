@@ -27,7 +27,9 @@ class TestSphereShade(unittest.TestCase):
         """Test when heightmap is of an invalid type."""
         with self.assertRaises(ValueError) as context:
             _sphere_shade(heightmap="invalid", texture="imhof1")
-        self.assertIn("Heightmap must be a np.ndarray.", str(context.exception))
+        self.assertIn(
+            "'heightmap' must be of type ndarray, but got str.", str(context.exception)
+        )
 
     def test_invalid_heightmap_dimension(self):
         """Test when heightmap is not a 2D numpy array."""
@@ -41,7 +43,10 @@ class TestSphereShade(unittest.TestCase):
         heightmap = np.array([[1, 2], [3, 4]])
         with self.assertRaises(ValueError) as context:
             _sphere_shade(heightmap=heightmap, sunangle="invalid")
-        self.assertIn("Sunangle must be a float or int.", str(context.exception))
+        self.assertIn(
+            "'sunangle' must be one of ['float', 'int'], but got str.",
+            str(context.exception),
+        )
 
     def test_invalid_texture_type(self):
         """Test when texture is of an invalid type."""
@@ -49,7 +54,7 @@ class TestSphereShade(unittest.TestCase):
         with self.assertRaises(ValueError) as context:
             _sphere_shade(heightmap=heightmap, texture=12345)
         self.assertIn(
-            "Texture must be a FloatSexpVector, IntSexpVector, or str.",
+            "'texture' must be one of ['ndarray', 'str'], but got int.",
             str(context.exception),
         )
 
@@ -66,7 +71,8 @@ class TestSphereShade(unittest.TestCase):
         with self.assertRaises(ValueError) as context:
             _sphere_shade(heightmap=heightmap, normalvectors="invalid")
         self.assertIn(
-            "Normalvectors must be a numpy array or None.", str(context.exception)
+            "'normalvectors' must be one of ['ndarray', 'NoneType'], but got str.",
+            str(context.exception),
         )
 
     def test_invalid_colorintensity_type(self):
@@ -74,21 +80,29 @@ class TestSphereShade(unittest.TestCase):
         heightmap = np.array([[1, 2], [3, 4]])
         with self.assertRaises(ValueError) as context:
             _sphere_shade(heightmap=heightmap, colorintensity="invalid")
-        self.assertIn("Colorintensity must be a float or int.", str(context.exception))
+        self.assertIn(
+            "'colorintensity' must be one of ['float', 'int'], but got str.",
+            str(context.exception),
+        )
 
     def test_invalid_zscale_type(self):
         """Test when zscale is of an invalid type."""
         heightmap = np.array([[1, 2], [3, 4]])
         with self.assertRaises(ValueError) as context:
             _sphere_shade(heightmap=heightmap, zscale="invalid")
-        self.assertIn("Zscale must be a float or int.", str(context.exception))
+        self.assertIn(
+            "'zscale' must be one of ['float', 'int'], but got str.",
+            str(context.exception),
+        )
 
     def test_invalid_progbar_type(self):
         """Test when progbar is of an invalid type."""
         heightmap = np.array([[1, 2], [3, 4]])
         with self.assertRaises(ValueError) as context:
             _sphere_shade(heightmap=heightmap, progbar="invalid")
-        self.assertIn("Progbar must be a boolean.", str(context.exception))
+        self.assertIn(
+            "'progbar' must be of type bool, but got str.", str(context.exception)
+        )
 
     @patch("rpy2.robjects.r")
     def test_valid_texture_as_numpy_array(self, mock_r):
