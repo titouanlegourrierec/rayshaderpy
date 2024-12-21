@@ -83,4 +83,5 @@ PACKAGES_LIST = [
     "rayrender",
     "RcppArmadillo",
     "rayshader",
+    "ambient",  # Optional
 ]
