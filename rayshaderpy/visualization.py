@@ -2,7 +2,7 @@
 
 import os
 import tempfile
-from typing import Tuple, Union
+from typing import Optional, Tuple, Union
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -52,7 +52,7 @@ def _plot_3d(
     waterdepth: float = 0,
     watercolor: str = "dodgerblue",
     wateralpha: float = 0.5,
-    waterlinecolor: Union[str, None] = None,
+    waterlinecolor: Optional[str] = None,
     waterlinealpha: float = 1,
     linewidth: int = 2,
     lineantialias: bool = False,
@@ -69,7 +69,7 @@ def _plot_3d(
     zoom: float = 1,
     background: str = "white",
     windowsize: Union[int, Tuple[int, ...]] = 600,
-    precomputed_normals: Union[np.ndarray, None] = None,
+    precomputed_normals: Optional[np.ndarray] = None,
     asp: int = 1,
     triangulate: bool = False,
     max_error: float = 0.001,
@@ -78,7 +78,7 @@ def _plot_3d(
     plot_new: bool = True,
     close_previous: bool = True,
     clear_previous: bool = True,
-    output_path: Union[str, None] = None,
+    output_path: Optional[str] = None,
 ) -> None:
     """
     Plot a 3D visualization with the given parameters.
@@ -124,7 +124,7 @@ def _plot_3d(
         Color of the water.
     wateralpha : float, default 0.5
         Water transparency.
-    waterlinecolor : Union[str, None], default None
+    waterlinecolor : Optional[str], default None
         Color of the lines around the edges of the water layer.
     waterlinealpha : float, default 1
         Water line tranparency.
@@ -164,7 +164,7 @@ def _plot_3d(
         specify the location of the x-y coordinates of the bottom-left corner of the viewport on the screen,
         and the next two (or one, if square) specify the window size. NOTE: The absolute positioning of the
         window does not currently work on macOS, but the size can still be specified.
-    precomputed_normals : Union[np.ndarray, None], default None
+    precomputed_normals : Optional[np.ndarray], default None
         Takes the output of 'calculate_normals()' to save computing normals internally.
     asp : int, default 1
         Aspect ratio of the resulting plot. Use 'asp = 1/cospi(mean_latitude/180)' to rescale lat/long at
@@ -191,7 +191,7 @@ def _plot_3d(
         Closes any previously open 'rgl' window. If False, old windows will be kept open.
     clear_previous : bool, default True
         Clears the previously open 'rgl' window if 'plot_new = FALSE'.
-    output_path : Union[str, None], default None
+    output_path : Optional[str], default None
         File path to save the image.
     """
 
@@ -203,15 +203,15 @@ def _plot_3d(
         "shadow": (shadow, bool), "shadowdepth": (shadowdepth, ["auto", float, int]), "shadowcolor": (shadowcolor, str),
         "shadow_darkness": (shadow_darkness, float), "shadowwidth": (shadowwidth, ["auto", float, int]), "water": (water, bool),
         "waterdepth": (waterdepth, (float, int)), "watercolor": (watercolor, str), "wateralpha": (wateralpha, float),
-        "waterlinecolor": (waterlinecolor, (str, type(None))), "waterlinealpha": (waterlinealpha, (float, int)),
+        "waterlinecolor": (waterlinecolor, Optional[str]), "waterlinealpha": (waterlinealpha, (float, int)),
         "linewidth": (linewidth, int), "lineantialias": (lineantialias, bool), "soil": (soil, bool),
         "soil_freq": (soil_freq, (float, int)), "soil_levels": (soil_levels, int), "soil_color_light": (soil_color_light, str),
         "soil_color_dark": (soil_color_dark, str), "soil_gradient": (soil_gradient, int),
         "soil_gradient_darken": (soil_gradient_darken, int), "theta": (theta, int), "phi": (phi, int), "fov": (fov, int),
         "zoom": (zoom, (float, int)), "background": (background, str), "windowsize": (windowsize, (int, tuple)),
-        "precomputed_normals": (precomputed_normals, [None, np.ndarray]), "asp": (asp, int), "triangulate": (triangulate, bool),
+        "precomputed_normals": (precomputed_normals, Optional[np.ndarray]), "asp": (asp, int), "triangulate": (triangulate, bool),
         "max_error": (max_error, float), "max_tri": (max_tri, int), "verbose": (verbose, bool), "plot_new": (plot_new, bool),
-        "close_previous": (close_previous, bool), "clear_previous": (clear_previous, bool), "output_path": (output_path, (str, type(None))),
+        "close_previous": (close_previous, bool), "clear_previous": (clear_previous, bool), "output_path": (output_path, Optional[str]),
     }
     # fmt: on
 
@@ -253,7 +253,7 @@ def _plot_map(
     hillshade: np.ndarray,
     rotate: int = 0,
     asp: float = 1,
-    output_path: Union[str, None] = None,
+    output_path: Optional[str] = None,
 ) -> None:
     """
     Plot a map with the given parameters.
@@ -267,7 +267,7 @@ def _plot_map(
     asp : float
         Default 1. Aspect ratio of the resulting plot. Use asp = 1/cospi(mean_latitude/180) to rescale lat/long
         at higher latitudes to the correct the aspect ratio.
-    output_path : Union[str, None]
+    output_path : Optional[str]
         Default None. File path to save the image.
 
     Returns:

@@ -1,6 +1,6 @@
 """TODO."""
 
-from typing import Tuple, Union
+from typing import Optional, Tuple, Union
 
 import numpy as np
 
@@ -13,13 +13,14 @@ class Renderer:
     """TODO."""
 
     def __init__(self):
-        """TODO."""
-        pass
+        """Initialize the Renderer class."""
+        self.heightmap = None
+        self.hillshade = None
 
     def plot_3d(
         self,
-        hillshade: np.ndarray,
-        heightmap: np.ndarray,
+        hillshade: Optional[np.ndarray] = None,
+        heightmap: Optional[np.ndarray] = None,
         zscale: float = 1,
         baseshape: str = "rectangle",
         solid: bool = True,
@@ -35,7 +36,7 @@ class Renderer:
         waterdepth: float = 0,
         watercolor: str = "dodgerblue",
         wateralpha: float = 0.5,
-        waterlinecolor: Union[str, None] = None,
+        waterlinecolor: Optional[str] = None,
         waterlinealpha: float = 1,
         linewidth: int = 2,
         lineantialias: bool = False,
@@ -52,7 +53,7 @@ class Renderer:
         zoom: int = 1,
         background: str = "white",
         windowsize: Union[int, Tuple[int, ...]] = 600,
-        precomputed_normals: Union[np.ndarray, None] = None,
+        precomputed_normals: Optional[np.ndarray] = None,
         asp: int = 1,
         triangulate: bool = False,
         max_error: float = 0.001,
@@ -61,7 +62,7 @@ class Renderer:
         plot_new: bool = True,
         close_previous: bool = True,
         clear_previous: bool = True,
-        output_path: Union[str, None] = None,
+        output_path: Optional[str] = None,
     ) -> None:
         """
         Plot a 3D visualization with the given parameters.
@@ -177,23 +178,24 @@ class Renderer:
         output_path : Union[str, None], default None
             File path to save the image.
         """
-        # fmt: off
-        return _plot_3d(
-            hillshade, heightmap, zscale, baseshape, solid, soliddepth, solidcolor, solidlinecolor, shadow,
-            shadowdepth, shadowcolor, shadow_darkness, shadowwidth, water, waterdepth, watercolor, wateralpha,
-            waterlinecolor, waterlinealpha, linewidth, lineantialias, soil, soil_freq, soil_levels,
-            soil_color_light, soil_color_dark, soil_gradient, soil_gradient_darken, theta, phi, fov, zoom,
-            background, windowsize, precomputed_normals, asp, triangulate, max_error, max_tri, verbose,
-            plot_new, close_previous, clear_previous, output_path,
-        )
-        # fmt: on
+        if heightmap is None:
+            if self.heightmap is None:
+                raise ValueError("heightmap is missing.")
+            heightmap = self.heightmap
+        if hillshade is None:
+            if self.hillshade is None:
+                raise ValueError("hillshade is missing.")
+            hillshade = self.hillshade
+        params = locals()
+        del params["self"]
+        return _plot_3d(**params)
 
     def plot_map(
         self,
-        hillshade: np.ndarray,
+        hillshade: Optional[np.ndarray] = None,
         rotate: int = 0,
         asp: float = 1,
-        output_path: Union[str, None] = None,
+        output_path: Optional[str] = None,
     ):
         """
         Plot a map with the given parameters.
@@ -214,12 +216,13 @@ class Renderer:
         ----------
             None
         """
-        return _plot_map(
-            hillshade,
-            rotate,
-            asp,
-            output_path,
-        )
+        if hillshade is None:
+            if self.hillshade is None:
+                raise ValueError("hillshade is missing.")
+            hillshade = self.hillshade
+        params = locals()
+        del params["self"]
+        return _plot_map(**params)
 
     def quit(self):
         """Close the 3D rendering window."""
@@ -251,14 +254,17 @@ class Renderer:
         >>> renderer = Renderer()
         >>> heightmap = renderer.raster_to_matrix("path/to/raster.tif")
         """
-        return _raster_to_matrix(raster, interactive)
+        params = locals()
+        del params["self"]
+        self.heightmap = _raster_to_matrix(**params)
+        return self.heightmap
 
     def sphere_shade(
         self,
-        heightmap: np.ndarray,  # 2D numpy array
+        heightmap: Optional[np.ndarray] = None,  # 2D numpy array
         sunangle: Union[float, int] = 315,
         texture: Union[np.ndarray, str] = "imhof1",
-        normalvectors: Union[np.ndarray, None] = None,
+        normalvectors: Optional[np.ndarray] = None,
         colorintensity: Union[float, int] = 1,
         zscale: Union[float, int] = 1,
         progbar: bool = False,
@@ -295,12 +301,11 @@ class Renderer:
         np.ndarray
             A 2D numpy array representing the hillshade.
         """
-        return _sphere_shade(
-            heightmap,
-            sunangle,
-            texture,
-            normalvectors,
-            colorintensity,
-            zscale,
-            progbar,
-        )
+        if heightmap is None:
+            if self.heightmap is None:
+                raise ValueError("heightmap is missing.")
+            heightmap = self.heightmap
+        params = locals()
+        del params["self"]
+        self.hillshade = _sphere_shade(**params)
+        return self.hillshade

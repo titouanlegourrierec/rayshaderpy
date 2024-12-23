@@ -1,6 +1,6 @@
 """TODO."""
 
-from typing import Union
+from typing import Optional, Union
 
 import numpy as np
 import rpy2.robjects as ro
@@ -49,7 +49,7 @@ def _sphere_shade(
     heightmap: np.ndarray,  # 2D numpy array
     sunangle: Union[float, int] = 315,
     texture: Union[np.ndarray, str] = "imhof1",
-    normalvectors: Union[np.ndarray, None] = None,
+    normalvectors: Optional[np.ndarray] = None,
     colorintensity: Union[float, int] = 1,
     zscale: Union[float, int] = 1,
     progbar: bool = False,
@@ -90,7 +90,7 @@ def _sphere_shade(
     # fmt: off
     params = {
         "heightmap": (heightmap, np.ndarray), "sunangle": (sunangle, (float, int)), "texture": (texture, (np.ndarray, str)),
-        "normalvectors": (normalvectors, (np.ndarray, type(None))), "colorintensity": (colorintensity, (float, int)),
+        "normalvectors": (normalvectors, Optional[np.ndarray]), "colorintensity": (colorintensity, (float, int)),
         "zscale": (zscale, (float, int)), "progbar": (progbar, bool),
     }
     # fmt: on

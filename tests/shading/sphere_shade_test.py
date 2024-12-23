@@ -71,7 +71,7 @@ class TestSphereShade(unittest.TestCase):
         with self.assertRaises(ValueError) as context:
             _sphere_shade(heightmap=heightmap, normalvectors="invalid")
         self.assertIn(
-            "'normalvectors' must be one of ['ndarray', 'NoneType'], but got str.",
+            "'normalvectors' must be of type Optional,",
             str(context.exception),
         )
 
