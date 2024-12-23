@@ -109,16 +109,21 @@ def _validate_params(params: dict) -> None:
     """
     for var_name, (var_value, var_type) in params.items():
         if isinstance(var_type, list):
-            if var_value not in var_type:
+            # Check if var_value is in the list of allowed values
+            if var_value not in var_type and not any(
+                isinstance(var_value, t) for t in var_type if isinstance(t, type)
+            ):
                 raise ValueError(
                     f"'{var_name}' must be one of {var_type}, but got {var_value}."
                 )
         elif isinstance(var_type, tuple):
+            # Check if var_value is an instance of any type in the tuple
             if not any(isinstance(var_value, t) for t in var_type):
                 raise ValueError(
                     f"'{var_name}' must be one of {[t.__name__ for t in var_type if hasattr(t, '__name__')]}, but got {type(var_value).__name__}."
                 )
         else:
+            # Check if var_value is an instance of var_type
             if not isinstance(var_value, var_type):
                 raise ValueError(
                     f"'{var_name}' must be of type {var_type.__name__}, but got {type(var_value).__name__}."
