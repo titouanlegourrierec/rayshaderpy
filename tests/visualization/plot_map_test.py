@@ -45,16 +45,14 @@ class TestPlotMap(unittest.TestCase):
         """Test when hillshade is of an invalid type."""
         with self.assertRaises(ValueError) as context:
             _plot_map(hillshade="invalid", rotate=0)
-        self.assertIn(
-            "hillshade must be a np.ndarray, or None.", str(context.exception)
-        )
+        self.assertIn("'hillshade' must be of type ndarray", str(context.exception))
 
     def test_invalid_rotate_value(self):
         """Test when rotate is not a valid value."""
         with self.assertRaises(ValueError) as context:
             _plot_map(hillshade=self.hillshade, rotate=45)
         self.assertIn(
-            "rotate must be one of the following values: 0, 90, 180, 270.",
+            "'rotate' must be one of [0, 90, 180, 270]",
             str(context.exception),
         )
 
@@ -62,7 +60,7 @@ class TestPlotMap(unittest.TestCase):
         """Test when asp is not a valid value."""
         with self.assertRaises(ValueError) as context:
             _plot_map(hillshade=self.hillshade, rotate=0, asp="invalid")
-        self.assertIn("asp must be a float or int.", str(context.exception))
+        self.assertIn("'asp' must be one of ['float', 'int']", str(context.exception))
 
     def test_output_file_creation(self):
         """Test that the output file is created."""

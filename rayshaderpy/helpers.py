@@ -16,8 +16,8 @@ def _assign_params(params: dict) -> None:
 
     Parameters:
     ----------
-        params : dict
-            A dictionary of variable names and their values.
+    params : dict
+        A dictionary of variable names and their values.
     """
     for var_name, (var_value, _) in params.items():
         if isinstance(var_value, type(None)):
@@ -49,18 +49,21 @@ def _raster_to_matrix(
 
     Parameters:
     ----------
-        raster (np.ndarray | str): The input raster data as a numpy array or a file path to a .tif file.
-        interactive (bool): If True, prints the dimensions of the matrix.
+    raster : Union[np.ndarray, str]
+        The input raster data as a numpy array or a file path to a .tif file.
+    interactive : bool, optional
+        If True, prints the dimensions of the matrix.
 
     Returns:
     ----------
-        raster (np.ndarray): The raster data as a 2D numpy array.
+    raster : np.ndarray
+        The raster data as a 2D numpy array.
 
     Examples:
     ----------
-        >>> from rayshaderpy import Renderer
-        >>> renderer = Renderer()
-        >>> heightmap = renderer.raster_to_matrix("path/to/raster.tif")
+    >>> from rayshaderpy import Renderer
+    >>> renderer = Renderer()
+    >>> heightmap = renderer.raster_to_matrix("path/to/raster.tif")
     """
 
     # Check if raster is either a numpy array or a string
@@ -104,8 +107,8 @@ def _validate_params(params: dict) -> None:
 
     Parameters:
     ----------
-        params : dict
-            A dictionary of variable names and their values.
+    params : dict
+        A dictionary of variable names and their values.
     """
     for var_name, (var_value, var_type) in params.items():
         if isinstance(var_type, list):

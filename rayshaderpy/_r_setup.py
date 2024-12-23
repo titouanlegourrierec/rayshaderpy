@@ -16,8 +16,10 @@ def install_r_packages(r_library_path: str, PACKAGES_LIST: List[str]):
 
     Parameters
     ----------
-        r_library_path (str): Path to the R library.
-        PACKAGES_LIST (list): List of R packages to install.
+    r_library_path : str
+        Path to the R library.
+    PACKAGES_LIST : List[str]
+        List of R packages to install.
     """
     try:
         result = subprocess.run(

@@ -61,24 +61,30 @@ def _sphere_shade(
 
     Parameters
     ----------
-    - heightmap (np.ndarray): A two-dimensional matrix, where each entry in the matrix is the elevation
-        at that point. All points are assumed to be evenly spaced.
-    - sunangle (float | int): Default 315 (NW). The direction of the main highlight color (derived from
-        the built-in palettes or the 'create_texture' function).
-    - texture (np.ndarray | str): Default 'imhof1'. Either a square matrix indicating the spherical texture
-        mapping, or a string indicating one of the built-in palettes ('imhof1','imhof2','imhof3','imhof4',
-        'desert', 'bw', and 'unicorn').
-    - normalvectors (np.ndarray | None): Default None. Cache of the normal vectors (from 'calculate_normal'
-        function). Supply this to speed up texture mapping.
-    - colorintensity (float | int): Default 1. The intensity of the color mapping. Higher values will increase
-        the intensity of the color mapping.
-    - zscale (float | int): Default 1. The ratio between the x and y spacing (which are assumed
-        to be equal) and the z axis. Ignored unless 'colorintensity' missing.
-    - progbar (bool): Default True if interactive, False otherwise. If False, turns off progress bar.
+    heightmap : np.ndarray
+        A two-dimensional matrix, where each entry in the matrix is the elevation at that point. All points
+        are assumed to be evenly spaced.
+    sunangle : Union[float, int], optional
+        Default 315 (NW). The direction of the main highlight color (derived from the built-in palettes or
+        the 'create_texture' function).
+    texture : Union[np.ndarray, str], optional
+        Default 'imhof1'. Either a square matrix indicating the spherical texture mapping, or a string indicating
+        one of the built-in palettes ('imhof1','imhof2','imhof3','imhof4', 'desert', 'bw', and 'unicorn').
+    normalvectors : Union[np.ndarray, None], optional
+        Default None. Cache of the normal vectors (from 'calculate_normal' function). Supply this to speed up
+        texture mapping.
+    colorintensity : Union[float, int], optional
+        Default 1. The intensity of the color mapping. Higher values will increase the intensity of the color mapping.
+    zscale : Union[float, int], optional
+        Default 1. The ratio between the x and y spacing (which are assumed to be equal) and the z axis. Ignored
+        unless 'colorintensity' missing.
+    progbar : bool, optional
+        Default True if interactive, False otherwise. If False, turns off progress bar.
 
     Returns
     ----------
-    - hillshade (np.ndarray): RGB array of hillshaded texture mappings.
+    np.ndarray
+        A 2D numpy array representing the hillshade.
     """
 
     # fmt: off

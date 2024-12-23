@@ -4,6 +4,7 @@ import os
 import tempfile
 from typing import Tuple, Union
 
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import rpy2.robjects as ro
@@ -17,16 +18,20 @@ def _display_image(image_path: str) -> None:
     Display the image using matplotlib.
 
     Parameters:
-        - image_path (str): The file path to the image to be displayed.
+    ----------
+    image_path : str
+        The file path to the image to be displayed.
 
     Returns:
-        - None
+    ---------
+        None
     """
     img = plt.imread(image_path)
     plt.figure(figsize=(10, 10))
     plt.imshow(img)
     plt.axis("off")
-    plt.show()
+    if matplotlib.get_backend().lower() != "agg":
+        plt.show()
 
 
 def _plot_3d(
@@ -255,32 +260,31 @@ def _plot_map(
 
     Parameters:
     ----------
-        - hillshade (np.ndarray or None): Hillshade to be plotted.
-        - rotate (int): Default 0. Rotates the output. Possible values: 0, 90, 180, 270.
-        - asp (float or int): Default 1. Aspect ratio of the resulting plot. Use
-    asp = 1/cospi(mean_latitude/180) to rescale lat/long at higher latitudes to the correct
-    the aspect ratio.
-        - output_path (str): Default None. File path to save the image.
+    hillshade : np.ndarray
+        Hillshade to be plotted.
+    rotate : int
+        Default 0. Rotates the output. Possible values: 0, 90, 180, 270.
+    asp : float
+        Default 1. Aspect ratio of the resulting plot. Use asp = 1/cospi(mean_latitude/180) to rescale lat/long
+        at higher latitudes to the correct the aspect ratio.
+    output_path : Union[str, None]
+        Default None. File path to save the image.
 
     Returns:
     ----------
-        - None
+        None
     """
 
-    # Check types of input parameters
-    if not isinstance(hillshade, (np.ndarray)):
-        raise ValueError("hillshade must be a np.ndarray, or None.")
-    if rotate not in [0, 90, 180, 270]:
-        raise ValueError("rotate must be one of the following values: 0, 90, 180, 270.")
-    if not isinstance(asp, (float, int)):
-        raise ValueError("asp must be a float or int.")
+    # fmt: off
+    params = {"hillshade": (hillshade, np.ndarray), "rotate": (rotate, [0, 90, 180, 270]),
+              "asp": (asp, (float, int)),
+              }
+    # fmt: on
+    _validate_params(params)
+    _assign_params(params)
 
     if not isinstance(output_path, (str, type(None))):
         raise ValueError("filepath must be a string or None.")
-
-    ro.globalenv["hillshade"] = hillshade
-    ro.globalenv["rotate"] = rotate
-    ro.globalenv["asp"] = asp
 
     if output_path is None:
         path = tempfile.NamedTemporaryFile(suffix=".png", delete=False).name
