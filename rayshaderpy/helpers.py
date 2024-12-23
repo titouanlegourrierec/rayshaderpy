@@ -1,6 +1,6 @@
 """Helper functions for the rayshaderpy package."""
 
-from typing import Any, Dict, List, Tuple, Union
+from typing import Dict, Union
 
 import numpy as np
 import rasterio
@@ -10,9 +10,7 @@ from rpy2.robjects import numpy2ri
 numpy2ri.activate()
 
 
-def _assign_params(
-    params: Dict[str, Tuple[Any, Union[type, Tuple[type, ...], List[Union[type, Any]]]]]
-) -> None:
+def _assign_params(params: Dict) -> None:
     """
     Assign variables to the R global environment.
 
@@ -103,9 +101,7 @@ def _resize_matrix():
     pass
 
 
-def _validate_params(
-    params: Dict[str, Tuple[Any, Union[type, Tuple[type, ...], List[Union[type, Any]]]]]
-) -> None:
+def _validate_params(params: Dict) -> None:
     """
     Validate the input variables.
 

@@ -1,10 +1,11 @@
 """TODO."""
 
-from typing import Optional, Tuple, Union
+from typing import Any, Optional, Tuple, Union
 
 import numpy as np
 
 from .helpers import _quit, _raster_to_matrix
+from .rendering import _render_highquality
 from .shading import _sphere_shade
 from .visualization import _plot_3d, _plot_map
 
@@ -258,6 +259,111 @@ class Renderer:
         del params["self"]
         self.heightmap = _raster_to_matrix(**params)
         return self.heightmap
+
+    def render_highquality(
+        self,
+        filename: Optional[str] = None,
+        samples: int = 128,
+        sample_method: str = "sobol_blue",
+        min_variance: float = 1e-07,
+        light: bool = True,
+        lightdirection: Union[int, Tuple[int, ...]] = 315,
+        lightaltitude: Union[int, Tuple[int, ...]] = 45,
+        lightsize: Optional[int] = None,
+        lightintensity: Union[int, Tuple[int, ...]] = 500,
+        lightcolor: Union[str, Tuple[str, ...]] = "white",
+        width: Optional[int] = None,
+        height: Optional[int] = None,
+        line_radius: float = 0.5,
+        point_radius: float = 1,
+        smooth_line: bool = False,
+        use_extruded_paths: bool = False,
+        ground_material: Any = None,  # Not yet implemented
+        ground_size: int = 100_000,  # Not yet implemented
+        scene_elements: Any = None,  # Not yet implemented
+        camera_location: Optional[Tuple[float, float, float]] = None,
+        camera_lookat: Optional[Tuple[float, float, float]] = None,
+        clear: bool = False,
+        point_material: Any = None,  # Not yet implemented
+        point_material_args: Any = None,  # Not yet implemented
+        path_material: Any = None,  # Not yet implemented
+        path_material_args: Any = None,  # Not yet implemented
+    ):
+        """
+        Render a high-quality image of the current scene.
+
+        Parameters
+        ----------
+        filename : str
+            Filename of saved image.
+        samples : int, optional
+            The maximum number of samples for each pixel. Increase this to increase the quality of the rendering.
+        sample_method : str, optional
+            Default "sobol_blue", unless 'samples > 256', in which it defaults to "sobol". The type of sampling
+            method used to generate random numbers. The other options are "random" (worst quality but fastest),
+            "sobol_blue" (best option for sample counts below 256), and "sobol" (slowest but best quality, better
+            than `sobol_blue` for sample counts greater than 256).
+        min_variance : float, optional
+            Default `1e-6`. Minimum acceptable variance for a block of pixels for the adaptive sampler. Smaller
+            numbers give higher quality images, at the expense of longer rendering times. If this is set to zero,
+            the adaptive sampler will be turned off and the renderer will use the maximum number of samples everywhere.
+        light : bool, optional
+            Default True. Whether there should be a light in the scene. If not, the scene will be lit with a bluish sky.
+        lightdirection : int or Tuple[int, ...], optional
+            Default 315. Position of the light angle around the scene. If this is a vector longer than one, multiple
+            lights will be generated (using values from 'lightaltitude', 'lightintensity', and 'lightcolor').
+        lightaltitude : int or Tuple[int, ...], optional
+            Default 45. Angle above the horizon that the light is located. If this is a vector longer than one, multiple
+            lights will be generated (using values from 'lightdirection', 'lightintensity', and 'lightcolor')
+        lightsize : int, optional
+            Default None. Radius of the light(s). Automatically chosen, but can be set here by the user.
+        lightintensity : int or Tuple[int, ...], optional
+            Default 500. Intensity of the light.
+        lightcolor : str or Tuple[str, ...], optional
+            Default "white". Color of the light(s).
+        width : int, optional
+            Defaults to the width of the rgl window. Width of the rendering.
+        height : int, optional
+            Defaults to the height of the rgl window. Height of the rendering.
+        line_radius : float, optional
+            Default 0.5. Radius of line/path segments.
+        point_radius : float, optional
+            Default 1. Radius of 3D points (rendered with 'render_points()' NOTE: not yet implemented). This scales
+            the existing value of size specified in 'render_points()'.
+        smooth_line : bool, optional
+            Default False. If True, the line will be rendered with a continuous smooth line, rather than straight
+            segments.
+        use_extruded_paths : bool, optional
+            Default True. If False, paths will be generated with the 'rayrender::path()' object, instead of
+            'rayrender::extruded_path()'.
+        ground_material : Any, optional
+            Material defined by the rayrender material functions. NOTE: Not yet implemented.
+        ground_size : int, optional
+            Default 100000. The width of the plane representing the ground.
+        scene_elements : Any, optional
+            Default None. Extra scene elements to add to the scene, created with rayrender. NOTE: Not yet implemented.
+        camera_location : Tuple[float, float, float], optional
+            Default None. Custom position of the camera. The `FOV`, `width`, and `height` arguments will still be derived
+            from the rgl window.
+        camera_lookat : Tuple[float, float, float], optional
+            Default None. Custom point at which the camera is directed. The `FOV`, `width`, and `height` arguments will still
+            be derived from the rgl window.
+        clear : bool, optional
+            Default False. If True, the rgl window will be cleared after rendering.
+        point_material : Any, optional
+            The material to be applied to point data. NOTE: Not yet implemented.
+        point_material_args : Any, optional
+            The function arguments to 'point_material'. The argument `color` will be automatically extracted from the rgl
+            scene, but all other arguments can be specified here. NOTE: Not yet implemented.
+        path_material : Any, optional
+            The material to be applied to path data. NOTE: Not yet implemented.
+        path_material_args : Any, optional
+            The function arguments to 'path_material'. The argument `color` will be automatically extracted from the rgl
+            scene, but all other arguments can be specified here. NOTE: Not yet implemented.
+        """
+        params = locals()
+        del params["self"]
+        return _render_highquality(**params)
 
     def sphere_shade(
         self,
