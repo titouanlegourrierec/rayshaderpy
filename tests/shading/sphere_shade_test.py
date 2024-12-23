@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 import numpy as np
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
 from rayshaderpy.shading import _sphere_shade
 

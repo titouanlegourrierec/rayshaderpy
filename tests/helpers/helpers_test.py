@@ -8,7 +8,8 @@ from unittest.mock import patch
 import numpy as np
 import rasterio
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+print(sys.path)
 
 from rayshaderpy.helpers import _raster_to_matrix
 
