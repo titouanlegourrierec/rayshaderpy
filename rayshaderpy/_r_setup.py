@@ -46,49 +46,24 @@ def install_r_packages(r_library_path: str, PACKAGES_LIST: List[str]):
                 f"Error setting R library path: {result.stderr.decode('utf-8')}"
             )
             sys.exit(1)
-        installed_packages = subprocess.run(
-            ["R", "-e", f'installed.packages(lib.loc="{r_library_path}")'],
-            capture_output=True,
-            text=True,
-            check=True,
-        ).stdout
         for package in tqdm(PACKAGES_LIST, desc="Installing R packages"):
-            if package not in installed_packages:
-                logger.info(f"Installing R package: {package}")
-                result = subprocess.run(
-                    [
-                        "R",
-                        "-e",
-                        f'install.packages("{package}", repos="https://cloud.r-project.org", lib="{r_library_path}")',
-                    ],
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
+            logger.info(f"Installing R package: {package}")
+            result = subprocess.run(
+                [
+                    "R",
+                    "-e",
+                    f'install.packages("{package}", repos="https://cloud.r-project.org", lib="{r_library_path}")',
+                ],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+            if result.returncode != 0:
+                logger.error(
+                    f"Error installing R package: {result.stderr.decode('utf-8')}"
                 )
-                if result.returncode != 0:
-                    logger.error(
-                        f"Error installing R package: {result.stderr.decode('utf-8')}"
-                    )
-                    sys.exit(1)
-                else:
-                    logger.info(result.stdout.decode("utf-8"))
+                sys.exit(1)
             else:
-                logger.info(f"Updating R package: {package}")
-                result = subprocess.run(
-                    [
-                        "R",
-                        "-e",
-                        f'update.packages(oldPkgs="{package}", repos="https://cloud.r-project.org", lib.loc="{r_library_path}", ask=FALSE)',
-                    ],
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
-                )
-                if result.returncode != 0:
-                    logger.error(
-                        f"Error updating R package: {result.stderr.decode('utf-8')}"
-                    )
-                    sys.exit(1)
-                else:
-                    logger.info(result.stdout.decode("utf-8"))
+                logger.info(result.stdout.decode("utf-8"))
 
     except FileNotFoundError:
         logger.critical("R is not installed. Please install R first.")
