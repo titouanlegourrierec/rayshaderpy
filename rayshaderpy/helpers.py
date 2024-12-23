@@ -29,7 +29,7 @@ def _assign_params(params: Dict) -> None:
         ro.globalenv[var_name] = var_value
 
 
-def _calculate_normal():
+def _calculate_normal():  # pragma: no cover
     """TODO."""
     # TODO: Implement calculate_normal functionality
     pass
@@ -95,7 +95,7 @@ def _raster_to_matrix(
     return raster
 
 
-def _resize_matrix():
+def _resize_matrix():  # pragma: no cover
     """TODO."""
     # TODO: Implement resize_matrix functionality
     pass

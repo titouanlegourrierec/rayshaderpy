@@ -9,37 +9,37 @@ from .helpers import _assign_params, _validate_params
 
 
 # Functions for generating hillshades.
-def _ambient_shade(self):
+def _ambient_shade(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement ambient_shade functionality
     pass
 
 
-def _cloud_shade(self):
+def _cloud_shade(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement cloud_shade functionality
     pass
 
 
-def _constant_shade(self):
+def _constant_shade(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement constant_shade functionality
     pass
 
 
-def _height_shade(self):
+def _height_shade(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement height_shade functionality
     pass
 
 
-def _lamb_shade(self):
+def _lamb_shade(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement lamb_shade functionality
     pass
 
 
-def _ray_shade(self):
+def _ray_shade(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement ray_shade functionality
     pass
@@ -113,13 +113,13 @@ def _sphere_shade(
     return hillshade
 
 
-def _texture_shade(self):
+def _texture_shade(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement texture_shade functionality
     pass
 
 
-def _create_texture(self):
+def _create_texture(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement create_texture functionality
     pass

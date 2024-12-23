@@ -86,5 +86,16 @@ jobs:
         run: |
           python scripts/setup_ci.py
 
-      - name: Run tests
-        run: pytest -s --maxfail=1 --disable-warnings
+      - name: Run tests with coverage
+        run: |
+          coverage run -m pytest -s --maxfail=1 --disable-warnings
+          coverage xml
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.xml
+          flags: unittests
+          name: codecov-coverage
+          slug: titouanlegourrierec/rayshaderpy

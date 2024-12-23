@@ -243,7 +243,7 @@ def _plot_3d(
         os.remove(path)
 
 
-def _plot_gg(self):
+def _plot_gg(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement plot_gg functionality
     pass
@@ -300,37 +300,37 @@ def _plot_map(
         os.remove(path)
 
 
-def _save_3dprint(self):
+def _save_3dprint(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement save_3dprint functionality
     pass
 
 
-def _save_multipolygonz_to_obj(self):
+def _save_multipolygonz_to_obj(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement save_multipolygonz_to_obj functionality
     pass
 
 
-def _save_obj(self):
+def _save_obj(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement save_obj functionality
     pass
 
 
-def _save_png(self):
+def _save_png(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement save_png functionality
     pass
 
 
-def _convert_path_to_animation_coords(self):
+def _convert_path_to_animation_coords(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement convert_path_to_animation_coords functionality
     pass
 
 
-def _convert_rgl_to_raymesh(self):
+def _convert_rgl_to_raymesh(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement convert_rgl_to_raymesh functionality
     pass

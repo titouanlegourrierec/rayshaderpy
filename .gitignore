@@ -23,3 +23,6 @@ __pycache__/
 
 # Configuration files
 mypy.ini
+
+.coverage
+htmlcov/

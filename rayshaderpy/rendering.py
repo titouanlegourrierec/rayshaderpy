@@ -11,49 +11,49 @@ from .visualization import _display_image
 
 
 # Functions for adding features to 3D maps, rendering post-processing effects, and saving snapshots.
-def _render_beveled_polygons(self):
+def _render_beveled_polygons(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement render_beveled_polygons functionality
     pass
 
 
-def _render_buildings(self):
+def _render_buildings(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement render_buildings functionality
     pass
 
 
-def _render_camera(self):
+def _render_camera(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement render_camera functionality
     pass
 
 
-def _render_clouds(self):
+def _render_clouds(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement render_clouds functionality
     pass
 
 
-def _render_compass(self):
+def _render_compass(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement render_compass functionality
     pass
 
 
-def _render_contours(self):
+def _render_contours(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement render_contours functionality
     pass
 
 
-def _render_depth(self):
+def _render_depth(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement render_depth functionality
     pass
 
 
-def _render_floating_overlay(self):
+def _render_floating_overlay(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement render_floating_overlay functionality
     pass
@@ -198,79 +198,79 @@ def _render_highquality(
         os.remove(path)
 
 
-def _render_label(self):
+def _render_label(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement render_label functionality
     pass
 
 
-def _render_movie(self):
+def _render_movie(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement render_movie functionality
     pass
 
 
-def _render_multipolygonz(self):
+def _render_multipolygonz(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement render_multipolygonz functionality
     pass
 
 
-def _render_obj(self):
+def _render_obj(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement render_obj functionality
     pass
 
 
-def _render_path(self):
+def _render_path(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement render_path functionality
     pass
 
 
-def _render_points(self):
+def _render_points(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement render_points functionality
     pass
 
 
-def _render_polygons(self):
+def _render_polygons(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement render_polygons functionality
     pass
 
 
-def _render_raymesh(self):
+def _render_raymesh(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement render_raymesh functionality
     pass
 
 
-def _render_resize_window(self):
+def _render_resize_window(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement render_resize_window functionality
     pass
 
 
-def _render_scalebar(self):
+def _render_scalebar(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement render_scalebar functionality
     pass
 
 
-def _render_snapshot(self):
+def _render_snapshot(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement render_snapshot functionality
     pass
 
 
-def _render_tree(self):
+def _render_tree(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement render_tree functionality
     pass
 
 
-def _render_water(self):
+def _render_water(self):  # pragma: no cover
     """TODO."""
     # TODO: Implement render_water functionality
     pass

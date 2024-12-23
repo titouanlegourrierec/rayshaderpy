@@ -53,6 +53,13 @@ lint:
 format:
 	$(ENV)/bin/black rayshaderpy tests
 
+coverage:
+	$(ENV)/bin/coverage run -m pytest tests
+	$(ENV)/bin/coverage report
+	$(ENV)/bin/coverage html
+	@echo "📊 Coverage report generated 📊"
+
+
 # Display help
 help:
 	@echo "==================================================================="
@@ -65,5 +72,6 @@ help:
 	@echo "  pre-commit - 🔍 Run pre-commit hooks"
 	@echo "  lint       - 🛠️ Lint code"
 	@echo "  format     - 🔄 Format code"
+	@echo "  coverage   - 📊 Generate coverage report"
 	@echo "  help       - ❓ Display this help message"
 	@echo "==================================================================="
