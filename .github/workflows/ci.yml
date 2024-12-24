@@ -99,3 +99,4 @@ jobs:
           flags: unittests
           name: codecov-coverage
           slug: titouanlegourrierec/rayshaderpy
+          fail_ci_if_error: false

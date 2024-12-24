@@ -5,6 +5,7 @@ from typing import Any, Optional, Tuple, Union
 import numpy as np
 
 from .helpers import _quit, _raster_to_matrix
+from .overlay import _add_water, _detect_water
 from .rendering import _render_highquality
 from .shading import _sphere_shade
 from .visualization import _plot_3d, _plot_map
@@ -17,6 +18,97 @@ class Renderer:
         """Initialize the Renderer class."""
         self.heightmap = None
         self.hillshade = None
+        self.watermap = None
+
+    def add_water(
+        self,
+        hillshade: Optional[np.ndarray] = None,  # 3D numpy array of an RGB image
+        watermap: Optional[np.ndarray] = None,  # 2D numpy array with values 1 and 0
+        color: Optional[str] = "imhof1",
+    ):
+        """
+        Add a layer of water to a map.
+
+        Parameters:
+        ----------
+        hillshade : np.ndarray
+            A three-dimensional matrix representing an RGB image.
+        watermap : np.ndarray
+            A two-dimensional matrix with values 1 and 0, where 1 indicates water and 0 indicates no water.
+        color : Optional[str], optional
+            Default 'imhof1'. The water fill color. A hexcode or recognized color string. Also includes built-in
+            colors to match the palettes included in sphere_shade: ('imhof1','imhof2','imhof3','imhof4', 'desert',
+            'bw', and 'unicorn').
+
+        Returns:
+        ----------
+        np.ndarray
+            A three-dimensional matrix representing the RGB image with the water layer added.
+        """
+        if hillshade is None:
+            if self.hillshade is None:
+                raise ValueError("hillshade is missing.")
+            hillshade = self.hillshade
+        if watermap is None:
+            if self.watermap is None:
+                raise ValueError("watermap is missing.")
+            watermap = self.watermap
+        params = locals()
+        del params["self"]
+        self.hillshade = _add_water(**params)
+        return self.hillshade
+
+    def detect_water(
+        self,
+        heightmap: Optional[np.ndarray] = None,
+        zscale: Union[float, int] = 1,
+        cutoff: float = 0.999,
+        min_area: Optional[float] = None,
+        max_height: Optional[float] = None,
+        normalvectors: Optional[np.ndarray] = None,
+        keep_groups: bool = False,
+        progbar: bool = False,
+    ) -> np.ndarray:
+        """
+        Detect bodies of water (of a user-defined minimum size) within an elevation matrix.
+
+        Parameters:
+        ----------
+        heightmap : np.ndarray
+            A two-dimensional matrix, where each entry in the matrix is the elevation at that point. All grid
+            points are assumed to be evenly spaced. Alternatively, if heightmap is a logical matrix, each
+            entry specifies whether that point is water or not.
+        zscale : Union[float, int], optional
+            Default 1. The ratio between the x and y spacing (which are assumed to be equal) and the z axis.
+            For example, if the elevation levels are in units of 1 meter and the grid values are separated by
+            10 meters, 'zscale' would be 10.
+        cutoff : float, optional
+            Default 0.999. The lower limit of the z-component of the unit normal vector to be classified as water.
+        min_area : Optional[float], optional
+            Minimum area (in units of the height matrix x and y spacing) to be considered a body of water.
+            If None, min_area is set to length(heightmap)/400.
+        max_height : Optional[float], optional
+            Default None. If passed, this number will specify the maximum height a point can be considered to be
+            water.
+        normalvectors : Optional[np.ndarray], optional
+            Default None. Pre-computed array of normal vectors from the 'calculate_normal' function. Supplying
+            this will speed up water detection.
+        keep_groups : bool, optional
+            Default False. If True, the matrix returned will retain the numbered grouping information.
+
+        Returns:
+        ----------
+        np.ndarray
+            Matrix indicating whether water was detected at that point. 1 indicates water, 0 indicates no water.
+        """
+        if heightmap is None:
+            if self.heightmap is None:
+                raise ValueError("heightmap is missing.")
+            heightmap = self.heightmap
+        params = locals()
+        del params["self"]
+        self.watermap = _detect_water(**params)
+        return self.watermap
 
     def plot_3d(
         self,
