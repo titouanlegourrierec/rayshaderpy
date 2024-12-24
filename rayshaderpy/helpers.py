@@ -23,7 +23,10 @@ def _assign_params(params: Dict) -> None:
         if isinstance(var_value, type(None)):
             var_value = ro.rinterface.NULL
         elif isinstance(var_value, tuple):
-            var_value = ro.FloatVector(var_value)
+            if all(isinstance(x, (float, int)) for x in var_value):
+                var_value = ro.FloatVector(var_value)
+            elif all(isinstance(x, str) for x in var_value):
+                var_value = ro.StrVector(var_value)
         elif var_name == "normalvectors" and isinstance(var_value, np.ndarray):
             var_value = numpy2ri.py2rpy(var_value)
         ro.globalenv[var_name] = var_value
@@ -79,6 +82,8 @@ def _raster_to_matrix(
         try:
             with rasterio.open(raster) as src:
                 raster = np.array(src.read(1))
+                raster = np.flipud(raster)
+                raster = np.rot90(raster, k=-1)
         except rasterio.errors.RasterioIOError as e:
             if "No such file or directory" in str(e):
                 raise FileNotFoundError(f"File {raster} not found.") from e

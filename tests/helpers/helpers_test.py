@@ -38,13 +38,16 @@ class TestRasterToMatrix(unittest.TestCase):
     @patch("rasterio.open")
     def test_valid_tif_file(self, mock_rasterio_open):
         """Test when input is a valid .tif file."""
-        mock_data = np.array([[5, 6], [7, 8]])
+        original_data = np.array([[5, 6], [7, 8]])
         mock_rasterio_open.return_value.__enter__.return_value.read.return_value = (
-            mock_data
+            original_data
         )
 
+        transformed_data = np.flipud(original_data)
+        transformed_data = np.rot90(transformed_data, k=-1)
+
         result = _raster_to_matrix("valid_file.tif", interactive=False)
-        np.testing.assert_array_equal(result, mock_data)
+        np.testing.assert_array_equal(result, transformed_data)
 
     def test_file_not_found(self):
         """Test when input file does not exist."""
